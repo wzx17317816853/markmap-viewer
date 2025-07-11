@@ -5,28 +5,36 @@
   <title>Markmap Viewer</title>
   <style>
     body, html { margin: 0; padding: 0; height: 100%; }
-    svg.markmap { width: 100vw; height: 100vh; display: block; }
+    #container { display: flex; height: 100vh; }
+    textarea { width: 40%; height: 100%; font-family: monospace; font-size: 14px; }
+    svg.markmap { width: 60%; height: 100%; display: block; }
   </style>
 </head>
 <body>
-  <svg class="markmap"></svg>
+  <div id="container">
+    <textarea id="md-input"># 人工智能
+- 机器学习
+  - 监督学习</textarea>
+    <svg class="markmap"></svg>
+  </div>
 
-  <!-- 先加载 d3 -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <!-- 再加载 markmap -->
   <script src="https://cdn.jsdelivr.net/npm/markmap-lib/dist/browser/view.min.js"></script>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const mdEncoded = params.get('md') || '# Markmap\n- 示例节点\n  - 子节点';
-    const md = decodeURIComponent(mdEncoded);
+    const svg = document.querySelector('svg.markmap');
+    const textarea = document.getElementById('md-input');
 
-    // 创建思维导图
-    markmap.Markmap.create(
-      document.querySelector('svg.markmap'),
-      null,
-      md
-    );
+    function render() {
+      const md = textarea.value;
+      markmap.Markmap.create(svg, null, md);
+    }
+
+    textarea.addEventListener('input', () => {
+      render();
+    });
+
+    render();
   </script>
 </body>
 </html>
