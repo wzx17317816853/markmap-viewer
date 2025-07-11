@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <title>Markmap Viewer</title>
-  <style>body,html { margin:0; padding:0; height:100%; }</style>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+    svg.markmap { width: 100vw; height: 100vh; display: block; }
+  </style>
 </head>
 <body>
-  <svg id="svg" style="width:100%; height:100%;"></svg>
+  <svg class="markmap"></svg>
 
-  <script type="module">
-    import { Markmap, loadCSS, loadJS } from 'https://cdn.jsdelivr.net/npm/markmap-lib@0.14.4/dist/browser/index.js';
+  <!-- 引入 markmap UMD 版本 -->
+  <script src="https://cdn.jsdelivr.net/npm/markmap-lib/dist/browser/view.min.js"></script>
 
-    // 加载样式
-    loadCSS();
-
-    const svg = document.getElementById('svg');
+  <script>
     const params = new URLSearchParams(window.location.search);
     const mdEncoded = params.get('md') || '# Markmap\n- 示例节点\n  - 子节点';
     const md = decodeURIComponent(mdEncoded);
 
-    const markmap = Markmap.create(svg, null, md);
+    // 创建思维导图
+    markmap.Markmap.create(
+      document.querySelector('svg.markmap'),
+      null,
+      md
+    );
   </script>
 </body>
 </html>
