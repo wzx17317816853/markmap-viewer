@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Markmap Viewer</title>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.15.3"></script>
-    <style>
-      body { margin: 0; }
-      svg.markmap { width: 100vw; height: 100vh; }
-    </style>
-  </head>
-  <body>
-    <svg class="markmap"></svg>
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const mdRaw = urlParams.get('md') || '# Markmap\n- 示例节点\n  - 子节点';
+<head>
+  <meta charset="utf-8" />
+  <title>Markmap Viewer</title>
+  <style>body,html { margin:0; padding:0; height:100%; }</style>
+</head>
+<body>
+  <svg id="svg" style="width:100%; height:100%;"></svg>
 
-      const md = decodeURIComponent(mdRaw);
+  <script type="module">
+    import { Markmap, loadCSS, loadJS } from 'https://cdn.jsdelivr.net/npm/markmap-lib@0.14.4/dist/browser/index.js';
 
-      markmap.autoLoader.render({ content: md });
-    </script>
-  </body>
+    // 加载样式
+    loadCSS();
+
+    const svg = document.getElementById('svg');
+    const params = new URLSearchParams(window.location.search);
+    const mdEncoded = params.get('md') || '# Markmap\n- 示例节点\n  - 子节点';
+    const md = decodeURIComponent(mdEncoded);
+
+    const markmap = Markmap.create(svg, null, md);
+  </script>
+</body>
 </html>
